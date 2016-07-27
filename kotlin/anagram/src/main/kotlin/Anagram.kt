@@ -1,14 +1,10 @@
-data class Anagram(val word: String) {
-    private val lowered = word.toLowerCase()
-    private val normalized = normalize(word)
-
-    fun match(words: List<String>): List<String> {
-        return words.filter {
-            lowered != it.toLowerCase() && normalized == normalize(it)
-        }
-    }
-
-    private fun normalize(word: String): String {
-        return word.toLowerCase().toList().sorted().joinToString("")
-    }
+data class Anagram(val baseWord: String) {
+    private val sortedLowerBaseWord = baseWord.toSortedLowerCase()
+    
+    fun match(words: List<String>): List<String> =
+        words.
+            filterNot { it.equals(baseWord, ignoreCase = true) }.
+            filter { it.toSortedLowerCase() == sortedLowerBaseWord }
 }
+
+fun String.toSortedLowerCase(): List<Char> = this.toLowerCase().toList().sorted()
